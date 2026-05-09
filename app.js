@@ -3,12 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const router = express.Router();
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var usersTasks = require('./routes/tasks');
-var usersGoals = require('./routes/goals');
+var tasksRouter = require('./routes/tasks');
+var goalsRouter = require('./routes/goals');
 
 var app = express();
 
@@ -21,19 +21,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-router.use((req, res, next)=>{
+
+//middleware
+app.use((req, res, next)=>{
   if(req.headers.authorization && req.headers.authorization === '123456'){
     next();
   }else{
-    res.json({'error': "No se encontro autorizacion!"})
+    res.status(401).json({'error': "No se encontro autorizacion!"})
   }
 }); 
 
-app.use('/', router);
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/tasks', usersTasks); 
-app.use('/goals', usersGoals); 
+app.use('/tasks', tasksRouter); 
+app.use('/goals', goalsRouter); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
