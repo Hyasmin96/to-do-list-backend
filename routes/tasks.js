@@ -1,33 +1,61 @@
 var express = require('express');
 var router = express.Router();
-
-let tasks = [];
-
+var connection = require('../config/db');
 // GET
-router.get('/getTasks', function(req, res, next){
-    res.json(tasks);
-})
+router.get('/getTasks', async function(req, res) {
+    try {
+        const [results] = await connection.query('SELECT * FROM tasks');
+        res.status(200).json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 // POST
-router.post('/addTask', function(req, res, next){
-    let timestamp = Date.now() + Math.random();
-    if(req.body && req.body.name && req.body.description && req.body.dueDate){
-        req.body.id = timestamp.toString();
-        tasks.push(req.body);
-        res.json(tasks);
-    }else {
-        res.status(400).json({});
+router.post('/addTask', async function(req, res) {
+    try {
+        if (req.body && req.body.name && req.body.description && req.body.dueDate) {
+
+            const sql = `
+                INSERT INTO tasks (name, description, dueDate)
+                VALUES (?, ?, ?)
+            `;
+
+            const [results] = await connection.query(sql, [
+                req.body.name,
+                req.body.description,
+                req.body.dueDate
+            ]);
+
+            res.status(200).json(results);
+
+        } else {
+            res.status(400).json({ error: "Missing fields" });
+        }
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
 // DELETE
-router.delete('/removeTask/:id', function(req, res, next){
-    if(req.params && req.params.id){
-        let id = req.params.id;
-        tasks = tasks.filter(task => task.id !== id);
-        res.json(tasks);
-    }else{
-        res.status(400).json({});
+router.delete('/removeTask/:id', async function(req, res) {
+    try {
+        if (req.params && req.params.id) {
+
+            const [results] = await connection.query(
+                'DELETE FROM tasks WHERE id = ?',
+                [req.params.id]
+            );
+
+            res.status(200).json(results);
+
+        } else {
+            res.status(400).json({ error: "Missing ID" });
+        }
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
