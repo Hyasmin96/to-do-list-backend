@@ -1,0 +1,63 @@
+[1mdiff --git a/routes/goals.js b/routes/goals.js[m
+[1mindex 8736c1c..44d9999 100644[m
+[1m--- a/routes/goals.js[m
+[1m+++ b/routes/goals.js[m
+[36m@@ -2,6 +2,8 @@[m [mvar express = require('express');[m
+ var router = express.Router();[m
+ var connection = require('../config/db');[m
+ [m
+[32m+[m
+[32m+[m
+ // GET[m
+ router.get('/getGoals', async function(req, res) {[m
+     try {[m
+[36m@@ -12,6 +14,8 @@[m [mrouter.get('/getGoals', async function(req, res) {[m
+     }[m
+ });[m
+ [m
+[32m+[m
+[32m+[m
+ // POST[m
+ router.post('/addGoal', async function(req, res) {[m
+     try {[m
+[36m@@ -39,6 +43,8 @@[m [mrouter.post('/addGoal', async function(req, res) {[m
+     }[m
+ });[m
+ [m
+[32m+[m
+[32m+[m
+ // DELETE[m
+ router.delete('/removeGoal/:id', async function(req, res) {[m
+     try {[m
+[1mdiff --git a/routes/tasks.js b/routes/tasks.js[m
+[1mindex 38d201f..52c4d8d 100644[m
+[1m--- a/routes/tasks.js[m
+[1m+++ b/routes/tasks.js[m
+[36m@@ -1,6 +1,9 @@[m
+ var express = require('express');[m
+ var router = express.Router();[m
+ var connection = require('../config/db');[m
+[32m+[m
+[32m+[m
+[32m+[m
+ // GET[m
+ router.get('/getTasks', async function(req, res) {[m
+     try {[m
+[36m@@ -11,6 +14,8 @@[m [mrouter.get('/getTasks', async function(req, res) {[m
+     }[m
+ });[m
+ [m
+[32m+[m
+[32m+[m
+ // POST[m
+ router.post('/addTask', async function(req, res) {[m
+     try {[m
+[36m@@ -38,6 +43,8 @@[m [mrouter.post('/addTask', async function(req, res) {[m
+     }[m
+ });[m
+ [m
+[32m+[m
+[32m+[m
+ // DELETE[m
+ router.delete('/removeTask/:id', async function(req, res) {[m
+     try {[m
